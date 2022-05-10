@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Unity WebGL Player | New Unity Project</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </head>
+    <body style="text-align: center" class="m-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-auto">
+                    <!-- "div unity-containerが絶対に必要" -->
+                    <div id="unity-container">
+                        <canvas id="unity-canvas" style="width: 800px; height: 800px"></canvas>
+                        <div id="unity-loading-bar">
+                            <div id="unity-logo"></div>
+                            <div id="unity-progress-bar-empty">
+                                <div id="unity-progress-bar-full"></div>
+                            </div>
+                        </div>
+                        <div id="unity-warning"></div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="border border-success p-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control form-control-sm" id="exampleInput1" />
+                        </div>
+                        <button type="button" class="btn btn-outline-success btn-sm" onclick="unitySendMessage()">Unityに送信</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="Build/dist.loader.js"></script>
+        <script>
+            const canvas = document.querySelector("#unity-canvas");
+            const loadingBar = document.querySelector("#unity-loading-bar");
+            const progressBarFull = document.querySelector("#unity-progress-bar-full");
+            const buildUrl = "Build";
+            const loaderUrl = buildUrl + "/dist.loader.js";
+            const config = {
+                dataUrl: buildUrl + "/dist.data",
+                frameworkUrl: buildUrl + "/dist.framework.js",
+                codeUrl: buildUrl + "/dist.wasm",
+                streamingAssetsUrl: "StreamingAssets",
+                companyName: "DefaultCompany",
+                productName: "UnityWebGL_1",
+                productVersion: "0.1",
+                //showBanner: unityShowBanner,
+            };
+            let unityInstance = null;
+            createUnityInstance(canvas, config, (progress) => {
+                progressBarFull.style.width = 100 * progress + "%";
+            })
+                .then((instance) => {
+                    loadingBar.style.display = "none";
+                    unityInstance = instance;
+                    // fullscreenButton.onclick = () => {
+                    //     unityInstance.SetFullscreen(1);
+                    // };
+                })
+                .catch((message) => {
+                    alert(message);
+                });
+
+            document.addEventListener("click", function (e) {
+                if (e.target.id == "unity-canvas") {
+                    // Clicked on canvas
+                    unityInstance.SendMessage("Button", "FocusCanvas", "1");
+                } else {
+                    // Clicked outside of canvas
+                    unityInstance.SendMessage("Button", "FocusCanvas", "0");
+                }
+            });
+            function unitySendMessage(params) {
+                const webInput = document.querySelector("#exampleInput1");
+                unityInstance.SendMessage("Button", "SetInputFieldText", webInput.value);
+            }
+        </script>
+    </body>
+</html>
