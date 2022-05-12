@@ -37,6 +37,8 @@
             const canvas = document.querySelector("#unity-canvas");
             const loadingBar = document.querySelector("#unity-loading-bar");
             const progressBarFull = document.querySelector("#unity-progress-bar-full");
+            loadingBar.style.display = "block";
+
             const config = {
                 dataUrl: buildUrl + "/dist.data",
                 frameworkUrl: buildUrlJs + "/dist.framework.js",
