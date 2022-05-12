@@ -18,9 +18,9 @@
         this.hideNextButton();
         //https://cdn.jsdelivr.net/gh/GifuTaro/InteractiveValueResources@main/css/SectionOmote.css
         //https://cdn.jsdelivr.net/gh/hyokonbanwa/InteractiveValueResources@314b41d7013a67b7460c1aba0509061ce9d85607/
-        //const buildUrlJs = "https://cdn.jsdelivr.net/gh/GifuTaro/UnityWebGLResources1@8b3c20f7d3d1f76b75c42641c706a8973bd2dfd1/Build"
-        const buildUrl = "https://github.com/GifuTaro/UnityWebGLResources1/blob/8b3c20f7d3d1f76b75c42641c706a8973bd2dfd1/Build/";
-        const requiredResources = ["https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js", "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js", buildUrl + "/dist.loader.js"];
+        const buildUrlJs = "https://cdn.jsdelivr.net/gh/GifuTaro/UnityWebGLResources1@8b3c20f7d3d1f76b75c42641c706a8973bd2dfd1/Build";
+        const buildUrl = "https://gifutaro.github.io/UnityWebGLResources1/Build";
+        const requiredResources = ["https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js", "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js", buildUrlJs + "/dist.loader.js"];
 
         const loadScript = (idx) => {
             console.log("Loading ", requiredResources[idx]);
@@ -39,7 +39,7 @@
             const progressBarFull = document.querySelector("#unity-progress-bar-full");
             const config = {
                 dataUrl: buildUrl + "/dist.data",
-                frameworkUrl: buildUrl + "/dist.framework.js",
+                frameworkUrl: buildUrlJs + "/dist.framework.js",
                 codeUrl: buildUrl + "/dist.wasm",
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "DefaultCompany",
@@ -71,8 +71,11 @@
                     unityInstance.SendMessage("Button", "FocusCanvas", "0");
                 }
             });
+            const button = document.getElementById("sendButton");
+            button.onclick = unitySendMessage;
             function unitySendMessage(params) {
                 const webInput = document.querySelector("#exampleInput1");
+                //console.log(unityInstance);
                 unityInstance.SendMessage("Button", "SetInputFieldText", webInput.value);
             }
         };

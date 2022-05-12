@@ -13,7 +13,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-auto">
-                    <!-- "div unity-containerが絶対に必要" -->
+                    
                     <div id="unity-container">
                         <canvas id="unity-canvas" style="width: 800px; height: 800px"></canvas>
                         <div id="unity-loading-bar">
@@ -30,12 +30,12 @@
                         <div class="form-group">
                             <input type="text" class="form-control form-control-sm" id="exampleInput1" />
                         </div>
-                        <button type="button" class="btn btn-outline-success btn-sm" onclick="unitySendMessage()">Unityに送信</button>
+                        <button type="button" class="btn btn-outline-success btn-sm" id ="sendButton">Unityに送信</button>
                     </div>
                 </div>
             </div>
         </div>
-
+        </div>
         <script src="Build/dist.loader.js"></script>
         <script>
             const canvas = document.querySelector("#unity-canvas");
@@ -77,6 +77,8 @@
                     unityInstance.SendMessage("Button", "FocusCanvas", "0");
                 }
             });
+            const button = document.getElementById("sendButton");
+            button.onclick = unitySendMessage;
             function unitySendMessage(params) {
                 const webInput = document.querySelector("#exampleInput1");
                 unityInstance.SendMessage("Button", "SetInputFieldText", webInput.value);
